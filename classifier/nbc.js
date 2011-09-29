@@ -1,32 +1,29 @@
 var docUtils = require("../utils/document");
 
-var getTwssScore = exports.getTwssScore = function(options) {
+var getTwssProbability = exports.getTwssProbability = function(options) {
   var promt           = docUtils.cleanDocument(options.promt)
-    , smoothing       = options.smoothing                || 0.001
     , numWordsInNgram = options.numWordsInNgram          || 1
-    , posProbs        = options.ngramProbabilities.pos   || {}
-    , negProbs        = options.ngramProbabilities.neg   || {}
-    , ngrams          = docUtils.getNgrams(promt, numWordsInNgram)
-    , probabilityOfBeingTwssPromt = 0;
+    , probs           = options.ngramProbabilities       || {}
+    , ngrams          = docUtils.getNgrams(promt, numWordsInNgram);
 
+  // Due to floating-point underflow, p is going to be computed in the log domain
+  // A great mathematics explanation can be found here:
+  // http://en.wikipedia.org/wiki/Bayesian_spam_filtering
+  var n = 0;
   for (var i = 0; i < ngrams.length; i++) {
-    var ngram = ngrams[i]
-      , probabilityOfBeingTwssNgram    = posProbs[ngram] ? posProbs[ngram] : 0
-      , probabilityOfNotBeingTwssNgram = negProbs[ngram] ? negProbs[ngram] : 0
-
-    // Since the probability that the ngram isn't part of a twss promt
-    // may equal 0, we have to add smoothing
-    probabilityOfBeingTwssPromt +=
-      Math.log(
-        (probabilityOfBeingTwssNgram + smoothing) /
-        (probabilityOfNotBeingTwssNgram + smoothing)
-      );
+    var ngram = ngrams[i];
+    if (!probs[ngram]) continue;
+    n += Math.log(1 - probs[ngram]) - Math.log(probs[ngram]);
   }
 
-  return probabilityOfBeingTwssPromt;
+  return 1 / (1 + Math.exp(n));
 };
 
 exports.isTwss = function(options) {
-  if (options.hasOwnProperty('twssScore')) return 0 < options.twssScore;
-  else                                     return 0 < getTwssScore(options);
+  var threshold = 0.99
+    , twssProbability = options.hasOwnProperty('twssProbability') ?
+                            options.twssProbability :
+                            getTwssProbability(options);
+
+  return twssProbability >= threshold;
 };

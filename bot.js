@@ -1,5 +1,3 @@
-// TODO: http://en.wikipedia.org/wiki/Bayesian_spam_filtering
-
 var config = {
       "numWordsInNgram": 1,
       "trainingSize":    process.argv[2] || 1000
@@ -21,21 +19,17 @@ twit.action = "sample";
 trainingData.pos.splice(config.trainingSize);
 trainingData.neg.splice(config.trainingSize);
 
-var ngramProbabilities = {
-  "pos": docUtils.getNgramProbabilities(trainingData.pos, config.numWordsInNgram),
-  "neg": docUtils.getNgramProbabilities(trainingData.neg, config.numWordsInNgram)
-};
+var ngramProbabilities =
+  docUtils.getNgramBayesianProbabilities(trainingData, config.numWordsInNgram);
 
 twit.addListener("tweet", function(tweet) {
-  var twssScore = classify.nbc.getTwssScore({
+  var twssProbability = classify.nbc.getTwssProbability({
     "promt":              tweet.text,
     "ngramProbabilities": ngramProbabilities,
     "numWordsInNgram":    config.numWordsInNgram
   });
 
-  if (classify.nbc.isTwss({ "twssScore": twssScore }))
-    console.log(twssScore + ': ' + tweet.text + '\n');
+  //console.log(twssProbability, tweet.text);
+  if (classify.nbc.isTwss({ "twssProbability": twssProbability }))
+    console.log(twssProbability + ': ' + tweet.text + '\n');
 }).stream();
-
-// Debugging
-// require("repl").start();
