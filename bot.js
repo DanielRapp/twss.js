@@ -11,7 +11,7 @@ var config = {
       "kss": require("./classifier/kss")
     },
     twitterUserInfo = require("./twitterUserInfo"),
-    twit = new (require("twitter-node").TwitterNode)(twitterUserInfo);
+    twit = new (require("./node-twitter"))(twitterUserInfo);
     docUtils = require("./utils/document");
 
 twit.action = "sample";
@@ -22,14 +22,18 @@ trainingData.neg.splice(config.trainingSize);
 var ngramProbabilities =
   docUtils.getNgramBayesianProbabilities(trainingData, config.numWordsInNgram);
 
-twit.addListener("tweet", function(tweet) {
-  var twssProbability = classify.nbc.getTwssProbability({
-    "promt":              tweet.text,
-    "ngramProbabilities": ngramProbabilities,
-    "numWordsInNgram":    config.numWordsInNgram
-  });
+twit.stream('statuses/sample', function(stream) {
+  stream.on('data', function (tweet) {
+    // Some tweets don't contain a tweet, for some reason. Should probably investigate.
+    if (tweet.text === undefined) return;
 
-  //console.log(twssProbability, tweet.text);
-  if (classify.nbc.isTwss({ "twssProbability": twssProbability }))
-    console.log(twssProbability + ': ' + tweet.text + '\n');
-}).stream();
+    var twssProbability = classify.nbc.getTwssProbability({
+      "promt":              tweet.text,
+      "ngramProbabilities": ngramProbabilities,
+      "numWordsInNgram":    config.numWordsInNgram
+    });
+
+    if (classify.nbc.isTwss({ "twssProbability": twssProbability }))
+      console.log(twssProbability + ': ' + tweet.text + '\n');
+  });
+});
