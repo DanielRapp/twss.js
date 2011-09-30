@@ -1,5 +1,5 @@
 var cleanDocument = exports.cleanDocument = function(document) {
-  var punctuationRegex = /\=|\@|\#|\||\+|\-|\,|\.|\!|\?|\"|\:|\;|\(|\)|\[|\]|\{|\}|\/|\\/g;
+  var punctuationRegex = /\=|\@|\#|\||\+|\-|\,|\.|\!|\?|\"\'|\:|\;|\(|\)|\[|\]|\{|\}|\/|\\/g;
 
   document = document.replace(punctuationRegex, "");
   document = document.toLowerCase();

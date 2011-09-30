@@ -4,7 +4,7 @@ var config = {
     },
     trainingData = {
       "pos": require("./data/Positive_Promts_TS").data,
-      "neg": require('./data/Negavite_Promts_T').data
+      "neg": require('./data/Negavite_Promts_FML').data
     },
     classify = {
       "nbc": require("./classifier/nbc"),
@@ -34,6 +34,6 @@ twit.stream('statuses/sample', function(stream) {
     });
 
     if (classify.nbc.isTwss({ "twssProbability": twssProbability }))
-      console.log(twssProbability + ': ' + tweet.text + '\n');
+      console.log(twssProbability + '\n' + tweet.text + '\n');
   });
 });

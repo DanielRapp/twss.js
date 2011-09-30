@@ -20,7 +20,7 @@ var getTwssProbability = exports.getTwssProbability = function(options) {
 };
 
 exports.isTwss = function(options) {
-  var threshold = 0.99
+  var threshold = 0.999
     , twssProbability = options.hasOwnProperty('twssProbability') ?
                             options.twssProbability :
                             getTwssProbability(options);
