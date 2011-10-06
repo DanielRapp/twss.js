@@ -19,18 +19,15 @@ twit.action = "sample";
 trainingData.pos.splice(config.trainingSize);
 trainingData.neg.splice(config.trainingSize);
 
-var ngramProbabilities =
-  docUtils.getNgramBayesianProbabilities(trainingData, config.numWordsInNgram);
-
 twit.stream('statuses/sample', function(stream) {
   stream.on('data', function (tweet) {
     // Some tweets don't contain a tweet, for some reason. Should probably investigate.
     if (tweet.text === undefined) return;
 
     var twssProbability = classify.nbc.getTwssProbability({
-      "promt":              tweet.text,
-      "ngramProbabilities": ngramProbabilities,
-      "numWordsInNgram":    config.numWordsInNgram
+      "promt":           tweet.text,
+      "trainingData":    trainingData,
+      "numWordsInNgram": config.numWordsInNgram
     });
 
     if (classify.nbc.isTwss({ "twssProbability": twssProbability }))
