@@ -29,5 +29,5 @@ exports.isTwss = function(options) {
                             options.twssProbability :
                             getTwssProbability(options);
 
-  return twssProbability >= threshold;
+  return twssProbability > threshold;
 };
