@@ -11,7 +11,7 @@ var getTwssProbability = exports.getTwssProbability = function(options) {
     probabilities = docUtils.getNgramBayesianProbabilities(trainingData, numWordsInNgram);
 
   // Due to floating-point underflow, p is going to be computed in the log domain
-  // A great mathematics explanation can be found here:
+  // An explanation of the equations used can be found here:
   // http://en.wikipedia.org/wiki/Bayesian_spam_filtering
   var n = 0;
   for (var i = 0; i < ngrams.length; i++) {

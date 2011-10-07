@@ -21,7 +21,7 @@ trainingData.neg.splice(config.trainingSize);
 
 twit.stream('statuses/sample', function(stream) {
   stream.on('data', function (tweet) {
-    // Some tweets don't contain a tweet, for some reason. Should probably investigate.
+    // For some reason some tweets don't contain a tweet. Should probably investigate.
     if (tweet.text === undefined) return;
 
     var twssProbability = classify.nbc.getTwssProbability({
