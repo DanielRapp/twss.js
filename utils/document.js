@@ -42,9 +42,7 @@ var getNgrams = exports.getNgrams = function(document, numWordsInNgram) {
 * "totalNgrams" [Int]: The total number of uniqe ngrams encountered
 */
 var getNgramFrequencies = exports.getNgramFrequencies =
-                          function(documents,
-                                   numWordsInNgram,
-                                   countNgramOncePerDoc) {
+ function(documents, numWordsInNgram, countNgramOncePerDoc) {
   var ngramFrequencies = {}
     , totalNgrams      = 0;
 
