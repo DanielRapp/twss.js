@@ -1,14 +1,21 @@
 var docUtils = require("../utils/document")
-  , probabilities = false;
+  , crypto   = require("crypto")
+  // Stores ngram probabilities based on the sha1 value of stringified trainingData object.
+  // This is probably an awful way to cache calculations.
+  , probabilities = {};
 
 var getTwssProbability = exports.getTwssProbability = function(options) {
-  var promt           = docUtils.cleanDocument(options.promt)
-    , numWordsInNgram = options.numWordsInNgram || 1
-    , trainingData    = options.trainingData    || {}
-    , ngrams          = docUtils.getNgrams(promt, numWordsInNgram);
+  var promt            = docUtils.cleanDocument(options.promt)
+    , numWordsInNgram  = options.numWordsInNgram || 1
+    , trainingData     = options.trainingData    || {}
+    , ngrams           = docUtils.getNgrams(promt, numWordsInNgram)
+    , trainingDataHash = crypto.createHash('sha1').update(JSON.stringify(trainingData)).digest('hex');
 
-  if (!probabilities)
-    probabilities = docUtils.getNgramBayesianProbabilities(trainingData, numWordsInNgram);
+  if (!probabilities[trainingDataHash])
+    probabilities[trainingDataHash] =
+      docUtils.getNgramBayesianProbabilities(trainingData, numWordsInNgram);
+
+  var probs = probabilities[trainingDataHash];
 
   // Due to floating-point underflow, p is going to be computed in the log domain
   // An explanation of the equations used can be found here:
@@ -16,15 +23,15 @@ var getTwssProbability = exports.getTwssProbability = function(options) {
   var n = 0;
   for (var i = 0; i < ngrams.length; i++) {
     var ngram = ngrams[i];
-    if (!probabilities[ngram]) continue;
-    n += Math.log(1 - probabilities[ngram]) - Math.log(probabilities[ngram]);
+    if (!probs[ngram]) continue;
+    n += Math.log(1 - probs[ngram]) - Math.log(probs[ngram]);
   }
 
   return 1 / (1 + Math.exp(n));
 };
 
 exports.isTwss = function(options) {
-  var threshold = 0.999
+  var threshold = options.threshold || 0.5
     , twssProbability = options.hasOwnProperty('twssProbability') ?
                             options.twssProbability :
                             getTwssProbability(options);
