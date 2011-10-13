@@ -8,7 +8,7 @@ Installation
 Just clone the repo:
 
 ```
-git clone git://github.com/DanielRapp/Twss.js.git
+git clone git://github.com/DanielRapp/twss.js.git
 ```
 
 Require the script:
