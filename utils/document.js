@@ -36,11 +36,6 @@ var getNgrams = exports.getNgrams = function(document, numWordsInNgram) {
   return (ngrams.length < 1) ? false : ngrams;
 };
 
-/*
-* This function figures out the frequency of ngrams in a set of documents.
-* "ngramFrequencies" [Object]: Frequencty of each word.
-* "totalNgrams" [Int]: The total number of uniqe ngrams encountered
-*/
 var getNgramFrequencies = exports.getNgramFrequencies =
  function(documents, numWordsInNgram, countNgramOncePerDoc) {
   var ngramFrequencies = {}
