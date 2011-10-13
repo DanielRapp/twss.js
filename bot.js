@@ -25,13 +25,12 @@ twit.stream('statuses/sample', function(stream) {
     if (tweet.text === undefined) return;
 
     var twssProbability = classify.nbc.getTwssProbability({
-      "threshold":       0.99,
       "promt":           tweet.text,
       "trainingData":    trainingData,
       "numWordsInNgram": config.numWordsInNgram
     });
 
-    if (classify.nbc.isTwss({ "twssProbability": twssProbability }))
+    if (classify.nbc.isTwss({ "twssProbability": twssProbability, "threshold": 0.99 }))
       console.log(twssProbability + '\n' + tweet.text + '\n');
   });
 });
