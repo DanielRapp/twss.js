@@ -2,5 +2,5 @@ twitterUserInfo.js
 .DS_Store
 node-twitter
 session.vim
-.sw*
+*.sw*
 stats/*
