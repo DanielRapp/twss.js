@@ -25,6 +25,7 @@ twit.stream('statuses/sample', function(stream) {
     if (tweet.text === undefined) return;
 
     var twssProbability = classify.nbc.getTwssProbability({
+      "threshold":       0.99,
       "promt":           tweet.text,
       "trainingData":    trainingData,
       "numWordsInNgram": config.numWordsInNgram
