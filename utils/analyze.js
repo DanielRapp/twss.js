@@ -11,11 +11,17 @@ var shuffleArray = function(array) {
     return array;
 };
 
-var getNumClassifications = exports.getNumClassifications =
+var getClassificationStats = exports.getClassificationStats =
  function(isClass, trainingData, validationData) {
   var classifications = {
-    "correct": 0,
-    "incorrect": 0
+    // True positive
+    "tp": 0,
+    // False positive
+    "fp": 0,
+    // False negative
+    "fn": 0,
+    // True negative
+    "tn": 0
   };
 
   for (var validationType in validationData) {
@@ -26,12 +32,12 @@ var getNumClassifications = exports.getNumClassifications =
       });
 
       if (validationType == 'pos') {
-        if (iC) classifications.correct++;
-        else    classifications.incorrect++;
+        if (iC) classifications.tp++;
+        else    classifications.fn++;
       }
       else if (validationType == 'neg') {
-        if (iC) classifications.incorrect++;
-        else    classifications.correct++;
+        if (iC) classifications.fp++;
+        else    classifications.tn++;
       }
     }
   }
@@ -41,14 +47,14 @@ var getNumClassifications = exports.getNumClassifications =
 
 var getNumCorrectClassifications = exports.getNumCorrectClassifications =
  function(isClass, trainingData, validationData) {
-  var numClassifications = getNumClassifications(isClass, trainingData, validationData);
-  return numClassifications.correct;
+  var stats = getClassificationStats(isClass, trainingData, validationData);
+  return stats.tp + stats.tn;
 };
 
 var getNumIncorrectClassifications = getNumIncorrectClassifications =
  function(isClass, trainingData, validationData) {
-  var numClassifications = getNumClassifications(isClass, trainingData, validationData);
-  return numClassifications.incorrect;
+  var stats = getClassificationStats(isClass, trainingData, validationData);
+  return stats.fp + stats.fn;
 };
 
 exports.kFoldCrossValidation = function(isClass, sampleData, numFolds) {
@@ -93,4 +99,12 @@ exports.kFoldCrossValidation = function(isClass, sampleData, numFolds) {
 
   // incorrect classifications / total classifications
   return numIncorrectClassifications / ( 2 * sampleDataSize * numFolds );
+};
+
+exports.getPrecisionRecall = function(isClass, trainingData, validationData) {
+  var stats = getClassificationStats(isClass, trainingData, validationData);
+  return {
+    "precision": stats.tp / ( stats.tp + stats.fp ),
+    "recall": stats.tp / ( stats.tp + stats.fn )
+  };
 };
