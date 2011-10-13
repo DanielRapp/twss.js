@@ -97,8 +97,7 @@ exports.kFoldCrossValidation = function(isClass, sampleData, numFolds) {
     };
   }
 
-  // incorrect classifications / total classifications
-  return numIncorrectClassifications / ( 2 * sampleDataSize * numFolds );
+  return numIncorrectClassifications;
 };
 
 exports.getPrecisionRecall = function(isClass, trainingData, validationData) {
