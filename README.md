@@ -13,8 +13,8 @@ git clone git://github.com/DanielRapp/Twss.js.git
 
 Require the script:
 
-```
-var classifier = require('./Twss.js/classifier/nbc')
+```javascript
+var classifier = require('./Twss.js/classifier/nbc');
 ```
 
 And start classifying:
@@ -30,7 +30,7 @@ console.log(classifier.isTwss({
 }));
 ```
 
-Cleaning up number of steps for a classification is definitly a priority on the todo list.
+Cleaning up number of steps for a classification is definitely a priority on the todo list.
 
 
 Dependecies
