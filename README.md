@@ -37,7 +37,7 @@ Dependecies
 ----
 **You don't need to configure or install anything to use the classifers.**
 
-For the bot to work you need a special version of [node-twitter](https://github.com/christopherwright/node-twitter) with ssl. Just clone the repo and  place it in the root of the module folder.
+For the bot to work you need a special version of [node-twitter](https://github.com/christopherwright/node-twitter) with ssl. Just clone the repo and  place it in the root of the twss.js folder.
 
 You also need the npm modules "cookies" and "oauth".
 
