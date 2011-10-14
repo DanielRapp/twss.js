@@ -14,15 +14,15 @@ git clone git://github.com/DanielRapp/twss.js.git
 Require the script:
 
 ```javascript
-var classifier = require('./Twss.js/classifier/nbc');
+var classifier = require('./twss.js/classifier/nbc');
 ```
 
 And start classifying:
 
 ```javascript
 var trainingData = {
-  "pos": require("./Twss.js/data/Positive_Promts_TS").data,
-  "neg": require('./Twss.js/data/Negavite_Promts_FML').data
+  "pos": require("./twss.js/data/Positive_Promts_TS").data,
+  "neg": require('./twss.js/data/Negavite_Promts_FML').data
 };
 console.log(classifier.isTwss({
   "promt":           "Can you make it harder?",
