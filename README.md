@@ -30,7 +30,7 @@ console.log(classifier.isTwss({
 }));
 ```
 
-Cleaning up number of steps for a classification is definitely a priority on the todo list.
+Reducing the number of steps for a classification is definitely a priority on the todo list.
 
 
 Dependecies
