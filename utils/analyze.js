@@ -1,3 +1,5 @@
+var docUtils = require("../utils/document");
+
 var shuffleArray = function(array) {
     var tmp, current, top = array.length;
 
@@ -57,6 +59,7 @@ var getNumIncorrectClassifications = getNumIncorrectClassifications =
   return stats.fp + stats.fn;
 };
 
+// TODO: Merge with getClassificationStats, since they kind of do the same thing
 exports.kFoldCrossValidation = function(isClass, sampleData, numFolds) {
   var numFolds                    = numFolds || 10
     // We assume there is an equal number of positive and negative sample points
@@ -106,4 +109,75 @@ exports.getPrecisionRecall = function(isClass, trainingData, validationData) {
     "precision": stats.tp / ( stats.tp + stats.fp ),
     "recall": stats.tp / ( stats.tp + stats.fn )
   };
+};
+
+/** Tfidf example:
+ * documents = ['hello day', 'hello night']
+ * numWordsInNgram = 1
+ *
+ * docStats = [
+ *  { ngramFrequencies: { 'hello':1, 'day':1 },
+ *    totalNgrams: 2 },
+ *
+ *  { ngramFrequencies: { 'hello':1, 'day':1 },
+ *    totalNgrams: 2 }
+ * ];
+ * totalDocs = 2
+ * documentsWithNgram = { 'hello':2, 'day':1, 'night':1 }
+ *
+ * tf =
+ *  [ { 'hello':1/2, 'day':1/2 },
+ *    { 'hello':1/2, 'night':1/2 } ]
+ *
+ * idf =
+ *  { 'hello':log(2/2), 'day':log(2/1), 'night':log(2/1) }
+ *
+ * tfidf =
+ *  [ { 'hello':1/2*log(2/2), 'day':1/2*log(2/1) },
+ *    { 'hello':1/2*log(2/2), 'night':1/2*log(2/1) } ]
+**/
+exports.getTfidf = function( documents, numWordsInNgram ) {
+  if (!numWordsInNgram) numWordsInNgram = 1;
+
+  var docStats = []
+    , numDocumentsWithNgram = {};
+
+  for (var d in documents) {
+    var ngramStats = docUtils.getNgramFrequencies( [documents[d]], numWordsInNgram, true );
+    docStats.push(ngramStats);
+
+    var ngramFrequencies = ngramStats.ngramFrequencies;
+    for (var ngram in ngramFrequencies) {
+      if (!numDocumentsWithNgram[ngram]) numDocumentsWithNgram[ngram] = 1;
+      else numDocumentsWithNgram[ngram]++;
+    }
+  }
+
+  // Calculate tf
+  var tf = [];
+  for (var i = 0; i < docStats.length; i++) {
+    tf[i] = {};
+
+    for (var ngram in docStats[i].ngramFrequencies) {
+      tf[i][ngram] = docStats[i].ngramFrequencies[ngram] / docStats[i].totalNgrams;
+    }
+  }
+
+  // Calculate idf
+  var idf = {};
+  for (var ngram in numDocumentsWithNgram) {
+    idf[ngram] = Math.log( documents.length / numDocumentsWithNgram[ngram] );
+  }
+
+  // Calculate tfidf
+  var tfidf = [];
+  for (var i = 0; i < tf.length; i++) {
+    tfidf[i] = {};
+
+    for (var ngram in tf[i]) {
+      tfidf[i][ngram] = tf[i][ngram] * idf[ngram];
+    }
+  }
+
+  return tfidf;
 };

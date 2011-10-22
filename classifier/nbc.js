@@ -17,7 +17,7 @@ var getTwssProbability = exports.getTwssProbability = function(options) {
 
   var probs = probabilities[trainingDataHash];
 
-  // Due to floating-point underflow, p is going to be computed in the log domain
+  // Due to floating-point underflow, p is going to be computed in the log domain.
   // An explanation of the equations used can be found here:
   // http://en.wikipedia.org/wiki/Bayesian_spam_filtering
   var n = 0;

@@ -1,4 +1,6 @@
 var cleanDocument = exports.cleanDocument = function(document) {
+  // TODO: Concat all regex and change punctuationRegex to including instead of excluding characters
+
   var punctuationRegex = /\=|\@|\#|\||\+|\-|\,|\.|\!|\?|\"\'|\:|\;|\(|\)|\[|\]|\{|\}|\/|\\/g;
 
   document = document.replace(punctuationRegex, "");

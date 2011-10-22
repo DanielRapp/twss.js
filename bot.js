@@ -8,7 +8,7 @@ var config = {
     },
     classify = {
       "nbc": require("./classifier/nbc"),
-      "kss": require("./classifier/kss")
+      "knn": require("./classifier/knn")
     },
     twitterUserInfo = require("./twitterUserInfo"),
     twit = new (require("./node-twitter"))(twitterUserInfo);
@@ -24,6 +24,11 @@ twit.stream('statuses/sample', function(stream) {
     // For some reason some tweets don't contain a tweet. Should probably investigate.
     if (tweet.text === undefined) return;
 
+    // @ replies are much harder to read
+    if (/\@/.test(tweet.text)) return;
+
+    /*
+    // NBC
     var twssProbability = classify.nbc.getTwssProbability({
       "promt":           tweet.text,
       "trainingData":    trainingData,
@@ -32,5 +37,15 @@ twit.stream('statuses/sample', function(stream) {
 
     if (classify.nbc.isTwss({ "twssProbability": twssProbability, "threshold": 0.99 }))
       console.log(twssProbability + '\n' + tweet.text + '\n');
+    */
+
+    // KNN
+    var isTwss = classify.knn.isTwss({
+      "promt":         tweet.text,
+      "trainingData":  trainingData,
+      "numNeighbours": 10
+    });
+
+    if (isTwss) console.log(tweet.text + '\n');
   });
 });
