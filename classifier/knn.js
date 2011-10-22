@@ -56,17 +56,3 @@ exports.isTwss = function(options) {
 
   return false;
 };
-
-/*
-Added the KNN classifier, tfidf algorithm and fixed small aesthetical issues
-Major
-* Using KNN in the bot
-* Added the tfidf algorithm to analyze.js
-
-Minor
-* Added a dot to a multiline comment in nbc.js
-* Bot ignores tweets with @
-* Fixed the name of kss.js to knn.js
-* Added a todo in analyze.js and document.js
-
-*/
