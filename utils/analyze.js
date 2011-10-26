@@ -62,7 +62,14 @@ var getNumIncorrectClassifications = getNumIncorrectClassifications =
 // TODO: Merge with getClassificationStats, since they kind of do the same thing
 exports.kFoldCrossValidation = function(isClass, sampleData, numFolds) {
   var numFolds                    = numFolds || 10
-    // We assume there is an equal number of positive and negative sample points
+    // We assume there are an equal number of positive and negative sample points
+
+    /* There is a slight mathematical issue with this.
+     * In true KFCV the training group is selected at random from the sample,
+     * that means there's not nessasarily going to be an equal number of positive
+     * and negative training points. Due to the law of large numbers, however,
+     * this shouldn't be an issue with a large enough sample pool.
+     */
     , sampleDataSize              = sampleData.pos.length
     , foldSize                    = Math.floor( sampleDataSize / numFolds )
     , numIncorrectClassifications = 0;
@@ -75,12 +82,6 @@ exports.kFoldCrossValidation = function(isClass, sampleData, numFolds) {
 
   for (var i = 0; i <= sampleDataSize; i+=foldSize) {
     var trainingGroup = {
-        /* There is a slight mathematical issue with this.
-        * In true KFCV the training group is selected at random from the sample,
-        * that means there's not nessasarily going to be an equal number of positive
-        * and negative training points. Due to the law of large numbers, however,
-        * this shouldn't be an issue with a large enough sample pool.
-        */
         // Use the first fold from data that hasn't been used as training data
         "pos": hasNotBeenUsedAsTrainingData.pos.splice( 0, foldSize ),
         "neg": hasNotBeenUsedAsTrainingData.neg.splice( 0, foldSize )
