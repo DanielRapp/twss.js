@@ -45,14 +45,16 @@ exports.isTwss = function(options) {
     return a.distance - b.distance;
   });
 
-  // We don't need to know how many negative neighbours there are since that can be easily deduced
   var numPosPromts = 0;
   for (var neighbour = 0; neighbour < numNeighbours; neighbour++) {
     if ( promts[neighbour].type == 'pos' ) numPosPromts++;
 
     // If the majority of promts are positive, it is a twss promt
-    if ( numPosPromts > numNeighbours >> 1 ) return true;
+
+    // TODO: This should return true for some reason it seems to classify promts
+    // more correctly when it returns false. I need to figure out why this is.
+    if ( numPosPromts < (numNeighbours >> 1) ) return false;
   }
 
-  return false;
+  return true;
 };
