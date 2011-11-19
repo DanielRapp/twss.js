@@ -48,13 +48,10 @@ exports.isTwss = function(options) {
   var numPosPromts = 0;
   for (var neighbour = 0; neighbour < numNeighbours; neighbour++) {
     if ( promts[neighbour].type == 'pos' ) numPosPromts++;
-
-    // If the majority of promts are positive, it is a twss promt
-
-    // TODO: This should return true for some reason it seems to classify promts
-    // more correctly when it returns false. I need to figure out why this is.
-    if ( numPosPromts < (numNeighbours >> 1) ) return false;
   }
+
+  // If the majority of promts are positive, it is a twss promt
+  if ( numPosPromts < (numNeighbours >> 1) ) return false;
 
   return true;
 };
