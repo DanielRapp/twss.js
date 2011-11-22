@@ -43,7 +43,7 @@ twit.stream('statuses/sample', function(stream) {
     var isTwss = classify.knn.isTwss({
       "promt":         tweet.text,
       "trainingData":  trainingData,
-      "numNeighbours": 10
+      "numNeighbours": 2
     });
 
     if (isTwss) console.log(tweet.text + '\n');
