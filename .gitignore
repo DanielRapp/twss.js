@@ -4,3 +4,4 @@ node-twitter
 session.vim
 *.sw*
 stats/*
+bot.js

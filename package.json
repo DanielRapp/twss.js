@@ -1,0 +1,12 @@
+{
+    "name": "twss"
+  , "version": "0.1"
+  , "description": "That's what she said classifier"
+  , "keywords": ["machine learning", "classifier", "twss", "ai"]
+  , "author": "Daniel Rapp <danielrappt@gmail.com>"
+  , "repository":{
+        "type": "git"
+      , "url": "https://github.com/DanielRapp/twss.js.git"
+    }
+  , "main": "index"
+}

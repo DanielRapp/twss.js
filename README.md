@@ -1,50 +1,24 @@
-TWSS.js is a node.js module that classifies if a sentence can be replied with "that's what she said".
+TWSS
+====
 
-Very much in the middle of development. But you may find the classifier and utils/document scripts useful.
-
+This is a node.js module that classifies if a sentence can be replied with "that's what she said".
 
 Installation
-----
-Just clone the repo:
+-----
 
-```
-git clone git://github.com/DanielRapp/twss.js.git
-```
-
-Require the script:
-
-```javascript
-var classifier = require('./twss.js/classifier/nbc');
-```
-
-And start classifying:
-
-```javascript
-var trainingData = {
-  "pos": require("./twss.js/data/Positive_Promts_TS").data,
-  "neg": require('./twss.js/data/Negavite_Promts_FML').data
-};
-console.log(classifier.isTwss({
-  "promt":           "Can you make it harder?",
-  "trainingData":    trainingData
-}));
-```
-
-Reducing the number of steps for a classification is definitely a priority on the todo list.
+    npm install twss
 
 
-Dependecies
-----
-**You don't need to configure or install anything to use the classifers.**
+Usage
+-----
 
-For the bot to work you need a special version of [node-twitter](https://github.com/christopherwright/node-twitter) with ssl. Just clone the repo and  place it in the root of the twss.js folder.
+    var twss = require('twss');
+    
+    twss.is("Nice weather we're having today") // > false
+    twss.is("Can you make it harder?")         // > true
+    twss.is("You're not going fast enough!")   // > true
 
-You also need the npm modules "cookies" and "oauth".
+You can also change algorithm from the default [naive bayes classifier](http://en.wikipedia.org/wiki/Naive_Bayes_classifier) (_nbc_) to a [k-nearest neighbor](http://en.wikipedia.org/wiki/K-nearest_neighbor_algorithm) algorithm (_knn_)
 
-```
-npm install cookies
-```
-
-```
-npm install oauth
-```
+    twss.algo = 'nbc';
+    twss.algo = 'knn';
