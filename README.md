@@ -31,5 +31,5 @@ If you want more obscure jokes to be accepted, you can set the "probability the 
     twss.threshold = 0.5;
     twss.is("You're hardly my first.") // false
 
-        twss.threshold = 0.3;
+    twss.threshold = 0.3;
     twss.is("You're hardly my first.") // true
