@@ -1,6 +1,6 @@
 {
     "name": "twss"
-  , "version": "0.1.2"
+  , "version": "0.1.3"
   , "description": "That's what she said classifier"
   , "keywords": ["machine learning", "classifier", "twss", "ai"]
   , "author": "Daniel Rapp <danielrappt@gmail.com>"
@@ -12,9 +12,8 @@
       , "url": "https://github.com/DanielRapp/twss.js.git"
     }
   , "main": "index"
-  , "dependencies" : {
-      "optimist":"0.3"
-    , "colors":"*"
+  , "dependencies": {
+      "optimist": "0.3"
+    , "colors": "*"
   }
-  , "bin":"./bin/twss.js"
 }
