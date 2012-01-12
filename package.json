@@ -9,4 +9,8 @@
       , "url": "https://github.com/DanielRapp/twss.js.git"
     }
   , "main": "index"
+  , "dependencies" : {
+      "optimist":"O.3"
+    , "colors":"*"
+  }
 }
