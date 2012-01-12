@@ -10,7 +10,7 @@
     }
   , "main": "index"
   , "dependencies" : {
-      "optimist":"O.3"
+      "optimist":"0.3"
     , "colors":"*"
   }
   , "bin":"./bin/twss.js"
