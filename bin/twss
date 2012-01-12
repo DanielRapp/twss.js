@@ -1,0 +1,12 @@
+#!/usr/bin/env node
+var twss = require("twss"),
+    stdin = process.stdin;
+
+stdin.resume();
+stdin.on('data', function(chunk) {
+  if (twss.is(chunk.toString())) {
+    process.exit(0);
+  } else {
+    process.exit(1);
+  }
+});
