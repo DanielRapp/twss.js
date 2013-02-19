@@ -1,6 +1,6 @@
 {
     "name": "twss"
-  , "version": "0.1.5"
+  , "version": "0.1.6"
   , "description": "That's what she said classifier"
   , "keywords": ["machine learning", "classifier", "twss", "ai"]
   , "author": "Daniel Rapp <danielrappt@gmail.com>"
