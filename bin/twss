@@ -41,7 +41,9 @@ function checkArguments (argv) {
     }
 }
 
-if(argv.help) {
+// If there are not enough arguments or help is requested, show help
+// Default argv: [ 'node', '/usr/local/bin/twss' ]
+if(process.argv.length < 3 || argv.help) {
     require('optimist').showHelp();
     process.exit();
 }
